@@ -1,32 +1,36 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
-let movie = {
-	name: String,
-	username: { type: String, required: true, index: { unique: true }},
-	password: { type: String, required: true, select: false }
+const Schema = mongoose.Schema;
+
+const userDef = {
+  name: String,
+  username: { type: String, required: true, index: { unique: true } },
+  password: { type: String, required: true, select: false }
 };
 
-movie.pre('save', (next) => {
-	var user = this;
+const UserSchema = new Schema(userDef);
 
-	// hash the password only if the password has been changed or user is new
-	if (!user.isModified('password')) return next();
+UserSchema.pre('save', (next) => {
+  const user = this;
 
-	// generate the hash
-	bcrypt.hash(user.password, null, null, function(err, hash) {
-		if (err) return next(err);
+  // hash the password only if the password has been changed or user is new
+  if (!user.isModified('password')) return next();
 
-		// change the password to the hashed version
-		user.password = hash;
-		next();
-	});
-})
+  // generate the hash
+  bcrypt.hash(user.password, null, null, (err, hash) => {
+    if (err) return next(err);
+
+    // change the password to the hashed version
+    user.password = hash;
+    next();
+  });
+});
 
 // method to compare a given password with the database hash
-movie.methods.comparePassword = (password) => {
-	var user = this;
-	return bcrypt.compareSync(password, user.password);
+UserSchema.methods.comparePassword = (password) => {
+  var user = this;
+  return bcrypt.compareSync(password, user.password);
 };
 
-module.exports = movie;
-
+module.exports = UserSchema;

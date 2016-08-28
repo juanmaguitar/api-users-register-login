@@ -9,4 +9,4 @@ function getAll(req, res) {
 		});
 	}
 
-export default getAll;
+module.exports = getAll;

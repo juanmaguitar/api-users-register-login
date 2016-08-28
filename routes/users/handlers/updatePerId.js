@@ -21,4 +21,4 @@ function updatePerId(req, res) {
   });
 }
 
-export default updatePerId;
+module.exports = updatePerId;

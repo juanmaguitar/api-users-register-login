@@ -2,8 +2,10 @@
   "name": "node-api",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon --watch db --watch models --watch routes --watch server.js server.js | bunyan",
+    "test": "NODE_ENV=test nyc tap --no-cov ./tests/integration/{**,**/**}-test.js",
+    "test:watch": "NODE_ENV=test gaze 'bin/watch-and-test.sh $path' 'tests/**/*.js' '*.js' 'api/**/*.js' 'core/**/*.js' 'libs/**/*.js'"
   },
   "engines": {
     "node": "6.4.0"
@@ -11,15 +13,36 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
+    "bunyan": "^1.8.0",
     "express": "~4.13.4",
     "mongoose": "~4.4.17",
     "morgan": "~1.7.0"
   },
   "devDependencies": {
+    "nodemon": "^1.10.2",
+    "supertest": "^2.0.0",
+    "tape": "^4.6.0",
+    "tap": "^6.3.2",
+    "nyc": "^8.1.0",
+    "gaze": "^1.0.0",
+    "gaze-cli": "^0.2.0",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.2.0",
     "eslint-plugin-react": "^6.1.2"
+  },
+  "nyc": {
+    "exclude": [
+      "node_modules",
+      "tests",
+      "config",
+      "libs",
+      "api.js"
+    ],
+    "lines": 0,
+    "cache": true,
+    "all": true,
+    "check-coverage": true
   }
 }

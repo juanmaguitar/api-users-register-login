@@ -8,4 +8,4 @@ function getPerId(req, res) {
   });
 }
 
-export default getPerId;
+module.exports = getPerId;

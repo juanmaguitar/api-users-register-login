@@ -10,4 +10,4 @@ function deletePerId(req, res) {
   });
 }
 
-export default deletePerId;
+module.exports = deletePerId;

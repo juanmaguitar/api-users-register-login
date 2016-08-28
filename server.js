@@ -18,15 +18,30 @@ app.use((req, res, next) => {
   next();
 });
 
+// pretty print json output
+app.set('json spaces', 2);
+
 // log all requests to the console
 app.use(morgan('dev'));
 
 require('./db')(dbURI);
 
-app.get('/', (req, res) => res.send('Welcome to the home page!'));
+//app.get('/', (req, res) => res.send('Welcome to the home page!'));
+app.get('/', (req, res) => {
+  res.json({ hello: 'world' })
+})
+
+
 app.get('/api', (req, res) => res.json({ message: 'hooray! welcome to our api!' }));
 
 require('./models');
 app.use('/api', require('./routes/users'));
 
-app.listen(port, () => console.log(`Magic happens on port ${port}`));
+// don't listen in test mode
+if (require.main === module) {
+  app.listen(port, () => console.log(`Magic happens on port ${port}`));
+} else {
+  console.log("testing mode...")
+}
+
+module.exports = app
