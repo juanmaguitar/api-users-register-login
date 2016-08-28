@@ -5,7 +5,7 @@ const server = require('../../server')
 const request = require('supertest')
 
 test('GET /', assert => {
-  const expected = { hello: 'world' }
+  const expected = { msg: 'Welcome to the home page!' }
 
   request(server)
     .get('/')

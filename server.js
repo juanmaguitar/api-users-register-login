@@ -27,9 +27,7 @@ app.use(morgan('dev'));
 require('./db')(dbURI);
 
 //app.get('/', (req, res) => res.send('Welcome to the home page!'));
-app.get('/', (req, res) => {
-  res.json({ hello: 'world' })
-})
+app.get('/', (req, res) => res.json({ msg: 'Welcome to the home page!' }) )
 
 
 app.get('/api', (req, res) => res.json({ message: 'hooray! welcome to our api!' }));
